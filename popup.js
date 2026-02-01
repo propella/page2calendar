@@ -1,7 +1,7 @@
-// Popup script: メインロジック
+// Popup script: Main logic
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // 要素の取得
+  // Get DOM elements
   const apiKeyInput = document.getElementById('apiKey');
   const saveApiKeyBtn = document.getElementById('saveApiKey');
   const extractBtn = document.getElementById('extractBtn');
@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const resultSection = document.getElementById('resultSection');
   const registerBtn = document.getElementById('registerBtn');
 
-  // フォーム要素
+  // Form elements
   const titleInput = document.getElementById('title');
   const startDateInput = document.getElementById('startDate');
   const endDateInput = document.getElementById('endDate');
@@ -18,13 +18,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   const descriptionInput = document.getElementById('description');
   const urlInput = document.getElementById('url');
 
-  // 保存されたAPIキーを読み込み
+  // Load saved API key
   const stored = await chrome.storage.local.get(['claudeApiKey']);
   if (stored.claudeApiKey) {
     apiKeyInput.value = stored.claudeApiKey;
   }
 
-  // APIキー保存
+  // Save API key
   saveApiKeyBtn.addEventListener('click', async () => {
     const apiKey = apiKeyInput.value.trim();
     if (apiKey) {
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // 情報抽出ボタン
+  // Extract information button
   extractBtn.addEventListener('click', async () => {
     const apiKey = apiKeyInput.value.trim();
     if (!apiKey) {
@@ -46,16 +46,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     hideResult();
 
     try {
-      // 現在のタブからページ情報を取得
+      // Get page information from current tab
       const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
-      // content scriptにメッセージを送信
+      // Send message to content script
       const pageContent = await chrome.tabs.sendMessage(tab.id, { action: 'getPageContent' });
 
-      // Claude APIで情報を抽出
+      // Extract information using Claude API
       const extractedData = await extractWithClaude(apiKey, pageContent);
 
-      // 結果を表示
+      // Display results
       displayResult(extractedData, pageContent.url);
     } catch (err) {
       showError(`エラーが発生しました: ${err.message}`);
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // カレンダー登録ボタン
+  // Register to calendar button
   registerBtn.addEventListener('click', () => {
     const eventData = {
       title: titleInput.value,
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     chrome.tabs.create({ url: calendarUrl });
   });
 
-  // Claude APIで情報を抽出
+  // Extract information using Claude API
   async function extractWithClaude(apiKey, pageContent) {
     const prompt = `以下のウェブページの内容から、美術展・展覧会の情報を抽出してください。
 
@@ -134,11 +134,11 @@ ${pageContent.bodyText}
     const data = await response.json();
     const content = data.content[0].text;
 
-    // JSONをパース
+    // Parse JSON
     try {
       return JSON.parse(content);
     } catch (e) {
-      // JSONが見つからない場合、JSONっぽい部分を抽出
+      // If JSON not found, extract JSON-like portion
       const jsonMatch = content.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         return JSON.parse(jsonMatch[0]);
@@ -147,7 +147,7 @@ ${pageContent.bodyText}
     }
   }
 
-  // Google Calendar URLを生成
+  // Generate Google Calendar URL
   function generateGoogleCalendarUrl(eventData) {
     const baseUrl = 'https://calendar.google.com/calendar/render';
     const params = new URLSearchParams();
@@ -155,12 +155,12 @@ ${pageContent.bodyText}
     params.set('action', 'TEMPLATE');
     params.set('text', eventData.title);
 
-    // 日付をGoogle Calendar形式に変換（終日イベント）
+    // Convert dates to Google Calendar format (all-day event)
     if (eventData.startDate) {
       const start = eventData.startDate.replace(/-/g, '');
       let end = start;
       if (eventData.endDate) {
-        // 終了日は翌日を指定（終日イベントのため）
+        // Set end date to next day (for all-day events)
         const endDate = new Date(eventData.endDate);
         endDate.setDate(endDate.getDate() + 1);
         end = endDate.toISOString().slice(0, 10).replace(/-/g, '');
@@ -172,7 +172,7 @@ ${pageContent.bodyText}
       params.set('location', eventData.location);
     }
 
-    // 説明にURLも含める
+    // Include URL in description
     let details = eventData.description || '';
     if (eventData.url) {
       details += `\n\n詳細: ${eventData.url}`;
@@ -184,7 +184,7 @@ ${pageContent.bodyText}
     return `${baseUrl}?${params.toString()}`;
   }
 
-  // 結果を表示
+  // Display results
   function displayResult(data, url) {
     titleInput.value = data.title || '';
     startDateInput.value = data.startDate || '';
@@ -196,7 +196,7 @@ ${pageContent.bodyText}
     resultSection.classList.remove('hidden');
   }
 
-  // ヘルパー関数
+  // Helper functions
   function showLoading(show) {
     if (show) {
       loading.classList.remove('hidden');
@@ -224,7 +224,7 @@ ${pageContent.bodyText}
     if (isError) {
       showError(message);
     } else {
-      // 成功メッセージ（簡易的に実装）
+      // Success message (simple implementation)
       const originalText = saveApiKeyBtn.textContent;
       saveApiKeyBtn.textContent = '✓';
       setTimeout(() => {
