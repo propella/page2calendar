@@ -1,77 +1,80 @@
-# 美術展カレンダー登録 Chrome拡張機能
+# Page to Calendar - Chrome Extension
 
-美術展・展覧会のウェブページから情報を自動抽出し、Googleカレンダーに登録するChrome拡張機能です。
+[日本語](README.ja.md)
 
-## 機能
+A Chrome extension that extracts event information from web pages (such as art exhibitions) using Claude AI and adds them to Google Calendar.
 
-- Claude AIがページ内容を解析し、展覧会情報（タイトル、会期、場所、概要）を自動抽出
-- 抽出結果は編集可能
-- ワンクリックでGoogleカレンダーに登録
+## Features
 
-## 必要なもの
+- Claude AI analyzes page content and extracts event info (title, dates, location, description)
+- Extracted results are editable
+- One-click registration to Google Calendar
 
-- Google Chrome ブラウザ
-- Claude API キー（[Anthropic Console](https://console.anthropic.com/)で取得）
+## Requirements
 
-## インストール方法
+- Google Chrome browser
+- Claude API key (get it from [Anthropic Console](https://console.anthropic.com/))
 
-1. このフォルダをダウンロードまたはクローン
+## Installation
 
-2. Chromeで `chrome://extensions` を開く
+1. Download or clone this folder
 
-3. 右上の「デベロッパーモード」をONにする
+2. Open `chrome://extensions` in Chrome
 
-4. 「パッケージ化されていない拡張機能を読み込む」をクリック
+3. Enable "Developer mode" in the top right
 
-5. `art-exhibition-calendar` フォルダを選択
+4. Click "Load unpacked"
 
-6. 拡張機能がインストールされ、ツールバーにアイコンが表示される
+5. Select the `page2calendar` folder
 
-## 使い方
+6. The extension will be installed and the icon will appear in the toolbar
 
-1. 美術展・展覧会のウェブページを開く
+## Usage
 
-2. ツールバーの拡張機能アイコンをクリック
+1. Open a web page with event information (e.g., art exhibition page)
 
-3. 初回のみ：Claude APIキーを入力して「保存」をクリック
+2. Click the extension icon in the toolbar
 
-4. 「情報を抽出」ボタンをクリック
+3. First time only: Enter your Claude API key and click "Save"
 
-5. 抽出された情報を確認・必要に応じて編集
+4. Click "Extract Info" button
 
-6. 「Googleカレンダーに登録」をクリック
+5. Review and edit the extracted information if needed
 
-7. Googleカレンダーが開き、イベント作成画面が表示される
+6. Click "Add to Google Calendar"
 
-## ファイル構成
+7. Google Calendar opens with the event creation form
+
+## File Structure
 
 ```
-art-exhibition-calendar/
-├── manifest.json   # 拡張機能設定
-├── popup.html      # ポップアップUI
-├── popup.js        # メインロジック
-├── content.js      # ページ情報取得
-├── styles.css      # スタイル
-├── icons/          # アイコン
+page2calendar/
+├── manifest.json   # Extension configuration
+├── popup.html      # Popup UI
+├── popup.js        # Main logic
+├── content.js      # Page content extraction
+├── styles.css      # Styles
+├── _locales/       # i18n translations
+├── icons/          # Icons
 └── README.md
 ```
 
-## 注意事項
+## Notes
 
-- APIキーはブラウザのローカルストレージに保存されます
-- Claude API の利用には料金が発生する場合があります
-- 抽出精度はページの構造により異なります。必ず結果を確認してください
+- API key is stored in browser's local storage
+- Claude API usage may incur charges
+- Extraction accuracy varies depending on page structure. Always verify the results
 
-## トラブルシューティング
+## Troubleshooting
 
-**「情報を抽出」が動作しない場合**
-- APIキーが正しく入力されているか確認
-- ページが完全に読み込まれてから実行
+**"Extract Info" doesn't work**
+- Verify your API key is entered correctly
+- Wait for the page to fully load before extracting
 
-**抽出結果が正しくない場合**
-- フォームで手動修正可能です
-- 日付形式は YYYY-MM-DD で入力してください
+**Extraction results are incorrect**
+- You can manually edit the form fields
+- Use YYYY-MM-DD format for dates
 
-## ライセンス
+## License
 
 MIT License
