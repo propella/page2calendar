@@ -4,5 +4,61 @@
   },
   "extDescription": {
     "message": "美術展情報などのウェブページからイベント情報をClaude AIで抽出し、Googleカレンダーに登録"
+  },
+  "popupTitle": {
+    "message": "Page to Calendar"
+  },
+  "apiKeyLabel": {
+    "message": "Claude API Key:"
+  },
+  "saveButton": {
+    "message": "保存"
+  },
+  "extractButton": {
+    "message": "情報を抽出"
+  },
+  "extracting": {
+    "message": "抽出中..."
+  },
+  "labelTitle": {
+    "message": "タイトル:"
+  },
+  "labelStartDate": {
+    "message": "開始日:"
+  },
+  "labelEndDate": {
+    "message": "終了日:"
+  },
+  "labelLocation": {
+    "message": "場所:"
+  },
+  "labelDescription": {
+    "message": "概要:"
+  },
+  "labelUrl": {
+    "message": "URL:"
+  },
+  "registerButton": {
+    "message": "Googleカレンダーに登録"
+  },
+  "errorApiKeyRequired": {
+    "message": "Claude APIキーを入力してください"
+  },
+  "errorOccurred": {
+    "message": "エラーが発生しました: $MESSAGE$",
+    "placeholders": {
+      "message": {
+        "content": "$1"
+      }
+    }
+  },
+  "errorApiFailed": {
+    "message": "API呼び出しに失敗しました"
+  },
+  "errorParseFailed": {
+    "message": "抽出結果のパースに失敗しました"
+  },
+  "details": {
+    "message": "詳細:"
   }
 }

@@ -1,67 +1,67 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>美術展カレンダー登録</title>
+  <title data-i18n="popupTitle">Page to Calendar</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
-    <h1>美術展カレンダー登録</h1>
+    <h1 data-i18n="popupTitle">Page to Calendar</h1>
 
-    <!-- API Key設定 -->
+    <!-- API Key Settings -->
     <div class="settings-section" id="settingsSection">
-      <label for="apiKey">Claude API Key:</label>
+      <label for="apiKey" data-i18n="apiKeyLabel">Claude API Key:</label>
       <div class="api-key-input">
         <input type="password" id="apiKey" placeholder="sk-ant-...">
-        <button id="saveApiKey" class="btn-secondary">保存</button>
+        <button id="saveApiKey" class="btn-secondary" data-i18n="saveButton">Save</button>
       </div>
     </div>
 
-    <!-- メインコンテンツ -->
+    <!-- Main Content -->
     <div class="main-section">
-      <button id="extractBtn" class="btn-primary">情報を抽出</button>
+      <button id="extractBtn" class="btn-primary" data-i18n="extractButton">Extract Info</button>
 
       <div id="loading" class="loading hidden">
         <div class="spinner"></div>
-        <span>抽出中...</span>
+        <span data-i18n="extracting">Extracting...</span>
       </div>
 
       <div id="error" class="error hidden"></div>
 
       <div id="resultSection" class="result-section hidden">
         <div class="form-group">
-          <label for="title">タイトル:</label>
+          <label for="title" data-i18n="labelTitle">Title:</label>
           <input type="text" id="title">
         </div>
 
         <div class="form-group">
-          <label for="startDate">開始日:</label>
+          <label for="startDate" data-i18n="labelStartDate">Start Date:</label>
           <input type="date" id="startDate">
         </div>
 
         <div class="form-group">
-          <label for="endDate">終了日:</label>
+          <label for="endDate" data-i18n="labelEndDate">End Date:</label>
           <input type="date" id="endDate">
         </div>
 
         <div class="form-group">
-          <label for="location">場所:</label>
+          <label for="location" data-i18n="labelLocation">Location:</label>
           <input type="text" id="location">
         </div>
 
         <div class="form-group">
-          <label for="description">概要:</label>
+          <label for="description" data-i18n="labelDescription">Description:</label>
           <textarea id="description" rows="3"></textarea>
         </div>
 
         <div class="form-group">
-          <label for="url">URL:</label>
+          <label for="url" data-i18n="labelUrl">URL:</label>
           <input type="text" id="url" readonly>
         </div>
 
-        <button id="registerBtn" class="btn-primary">Googleカレンダーに登録</button>
+        <button id="registerBtn" class="btn-primary" data-i18n="registerButton">Add to Google Calendar</button>
       </div>
     </div>
   </div>

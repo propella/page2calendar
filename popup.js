@@ -1,6 +1,9 @@
 // Popup script: Main logic
 
 document.addEventListener('DOMContentLoaded', async () => {
+  // Apply i18n translations
+  applyI18n();
+
   // Get DOM elements
   const apiKeyInput = document.getElementById('apiKey');
   const saveApiKeyBtn = document.getElementById('saveApiKey');
@@ -29,7 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const apiKey = apiKeyInput.value.trim();
     if (apiKey) {
       await chrome.storage.local.set({ claudeApiKey: apiKey });
-      showMessage('APIキーを保存しました', false);
+      showMessage('', false);
     }
   });
 
@@ -37,7 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   extractBtn.addEventListener('click', async () => {
     const apiKey = apiKeyInput.value.trim();
     if (!apiKey) {
-      showError('Claude APIキーを入力してください');
+      showError(chrome.i18n.getMessage('errorApiKeyRequired'));
       return;
     }
 
@@ -58,7 +61,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Display results
       displayResult(extractedData, pageContent.url);
     } catch (err) {
-      showError(`エラーが発生しました: ${err.message}`);
+      showError(chrome.i18n.getMessage('errorOccurred', [err.message]));
     } finally {
       showLoading(false);
     }
@@ -128,7 +131,7 @@ ${pageContent.bodyText}
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.error?.message || 'API呼び出しに失敗しました');
+      throw new Error(errorData.error?.message || chrome.i18n.getMessage('errorApiFailed'));
     }
 
     const data = await response.json();
@@ -143,7 +146,7 @@ ${pageContent.bodyText}
       if (jsonMatch) {
         return JSON.parse(jsonMatch[0]);
       }
-      throw new Error('抽出結果のパースに失敗しました');
+      throw new Error(chrome.i18n.getMessage('errorParseFailed'));
     }
   }
 
@@ -175,7 +178,7 @@ ${pageContent.bodyText}
     // Include URL in description
     let details = eventData.description || '';
     if (eventData.url) {
-      details += `\n\n詳細: ${eventData.url}`;
+      details += `\n\n${chrome.i18n.getMessage('details')} ${eventData.url}`;
     }
     if (details) {
       params.set('details', details.trim());
@@ -233,3 +236,14 @@ ${pageContent.bodyText}
     }
   }
 });
+
+// Apply i18n translations to elements with data-i18n attribute
+function applyI18n() {
+  document.querySelectorAll('[data-i18n]').forEach(element => {
+    const messageKey = element.getAttribute('data-i18n');
+    const message = chrome.i18n.getMessage(messageKey);
+    if (message) {
+      element.textContent = message;
+    }
+  });
+}

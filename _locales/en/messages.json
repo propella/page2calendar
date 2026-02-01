@@ -4,5 +4,61 @@
   },
   "extDescription": {
     "message": "Extract event info from web pages such as art exhibitions with Claude AI and add to Google Calendar"
+  },
+  "popupTitle": {
+    "message": "Page to Calendar"
+  },
+  "apiKeyLabel": {
+    "message": "Claude API Key:"
+  },
+  "saveButton": {
+    "message": "Save"
+  },
+  "extractButton": {
+    "message": "Extract Info"
+  },
+  "extracting": {
+    "message": "Extracting..."
+  },
+  "labelTitle": {
+    "message": "Title:"
+  },
+  "labelStartDate": {
+    "message": "Start Date:"
+  },
+  "labelEndDate": {
+    "message": "End Date:"
+  },
+  "labelLocation": {
+    "message": "Location:"
+  },
+  "labelDescription": {
+    "message": "Description:"
+  },
+  "labelUrl": {
+    "message": "URL:"
+  },
+  "registerButton": {
+    "message": "Add to Google Calendar"
+  },
+  "errorApiKeyRequired": {
+    "message": "Please enter your Claude API key"
+  },
+  "errorOccurred": {
+    "message": "Error occurred: $MESSAGE$",
+    "placeholders": {
+      "message": {
+        "content": "$1"
+      }
+    }
+  },
+  "errorApiFailed": {
+    "message": "API call failed"
+  },
+  "errorParseFailed": {
+    "message": "Failed to parse extraction result"
+  },
+  "details": {
+    "message": "Details:"
   }
 }
