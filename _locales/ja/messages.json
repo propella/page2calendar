@@ -3,13 +3,16 @@
     "message": "Page to Calendar"
   },
   "extDescription": {
-    "message": "美術展情報などのウェブページからイベント情報をClaude AIで抽出し、Googleカレンダーに登録"
+    "message": "美術展情報などのウェブページからイベント情報をAIで抽出し、Googleカレンダーに登録"
   },
   "popupTitle": {
     "message": "Page to Calendar"
   },
+  "providerLabel": {
+    "message": "AIプロバイダー:"
+  },
   "apiKeyLabel": {
-    "message": "Claude API Key:"
+    "message": "API Key:"
   },
   "saveButton": {
     "message": "保存"
@@ -42,7 +45,7 @@
     "message": "Googleカレンダーに登録"
   },
   "errorApiKeyRequired": {
-    "message": "Claude APIキーを入力してください"
+    "message": "APIキーを入力してください"
   },
   "errorOccurred": {
     "message": "エラーが発生しました: $MESSAGE$",

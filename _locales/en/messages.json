@@ -3,13 +3,16 @@
     "message": "Page to Calendar"
   },
   "extDescription": {
-    "message": "Extract event info from web pages such as art exhibitions with Claude AI and add to Google Calendar"
+    "message": "Extract event info from web pages such as art exhibitions with AI and add to Google Calendar"
   },
   "popupTitle": {
     "message": "Page to Calendar"
   },
+  "providerLabel": {
+    "message": "AI Provider:"
+  },
   "apiKeyLabel": {
-    "message": "Claude API Key:"
+    "message": "API Key:"
   },
   "saveButton": {
     "message": "Save"
@@ -42,7 +45,7 @@
     "message": "Add to Google Calendar"
   },
   "errorApiKeyRequired": {
-    "message": "Please enter your Claude API key"
+    "message": "Please enter your API key"
   },
   "errorOccurred": {
     "message": "Error occurred: $MESSAGE$",

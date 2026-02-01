@@ -12,7 +12,14 @@
 
     <!-- API Key Settings -->
     <div class="settings-section" id="settingsSection">
-      <label for="apiKey" data-i18n="apiKeyLabel">Claude API Key:</label>
+      <div class="form-group">
+        <label for="provider" data-i18n="providerLabel">AI Provider:</label>
+        <select id="provider">
+          <option value="claude">Claude</option>
+          <option value="gemini">Gemini</option>
+        </select>
+      </div>
+      <label for="apiKey" data-i18n="apiKeyLabel">API Key:</label>
       <div class="api-key-input">
         <input type="password" id="apiKey" placeholder="sk-ant-...">
         <button id="saveApiKey" class="btn-secondary" data-i18n="saveButton">Save</button>

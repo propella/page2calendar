@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   applyI18n();
 
   // Get DOM elements
+  const providerSelect = document.getElementById('provider');
   const apiKeyInput = document.getElementById('apiKey');
   const saveApiKeyBtn = document.getElementById('saveApiKey');
   const extractBtn = document.getElementById('extractBtn');
@@ -21,17 +22,58 @@ document.addEventListener('DOMContentLoaded', async () => {
   const descriptionInput = document.getElementById('description');
   const urlInput = document.getElementById('url');
 
-  // Load saved API key
-  const stored = await chrome.storage.local.get(['claudeApiKey']);
-  if (stored.claudeApiKey) {
-    apiKeyInput.value = stored.claudeApiKey;
+  // Update placeholder based on provider
+  function updatePlaceholder() {
+    const provider = providerSelect.value;
+    if (provider === 'claude') {
+      apiKeyInput.placeholder = 'sk-ant-...';
+    } else {
+      apiKeyInput.placeholder = 'AIza...';
+    }
   }
+
+  // Load saved settings
+  const stored = await chrome.storage.local.get(['provider', 'claudeApiKey', 'geminiApiKey']);
+  if (stored.provider) {
+    providerSelect.value = stored.provider;
+  }
+  updatePlaceholder();
+
+  // Load the appropriate API key based on provider
+  const currentProvider = providerSelect.value;
+  if (currentProvider === 'claude' && stored.claudeApiKey) {
+    apiKeyInput.value = stored.claudeApiKey;
+  } else if (currentProvider === 'gemini' && stored.geminiApiKey) {
+    apiKeyInput.value = stored.geminiApiKey;
+  }
+
+  // Provider change handler
+  providerSelect.addEventListener('change', async () => {
+    const provider = providerSelect.value;
+    updatePlaceholder();
+
+    // Load the API key for the selected provider
+    const stored = await chrome.storage.local.get(['claudeApiKey', 'geminiApiKey']);
+    if (provider === 'claude') {
+      apiKeyInput.value = stored.claudeApiKey || '';
+    } else {
+      apiKeyInput.value = stored.geminiApiKey || '';
+    }
+
+    // Save provider preference
+    await chrome.storage.local.set({ provider: provider });
+  });
 
   // Save API key
   saveApiKeyBtn.addEventListener('click', async () => {
     const apiKey = apiKeyInput.value.trim();
+    const provider = providerSelect.value;
     if (apiKey) {
-      await chrome.storage.local.set({ claudeApiKey: apiKey });
+      if (provider === 'claude') {
+        await chrome.storage.local.set({ claudeApiKey: apiKey });
+      } else {
+        await chrome.storage.local.set({ geminiApiKey: apiKey });
+      }
       showMessage('', false);
     }
   });
@@ -55,8 +97,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Send message to content script
       const pageContent = await chrome.tabs.sendMessage(tab.id, { action: 'getPageContent' });
 
-      // Extract information using Claude API
-      const extractedData = await extractWithClaude(apiKey, pageContent);
+      // Extract information using selected AI provider
+      const provider = providerSelect.value;
+      const extractedData = provider === 'claude'
+        ? await extractWithClaude(apiKey, pageContent)
+        : await extractWithGemini(apiKey, pageContent);
 
       // Display results
       displayResult(extractedData, pageContent.url);
@@ -82,9 +127,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     chrome.tabs.create({ url: calendarUrl });
   });
 
-  // Extract information using Claude API
-  async function extractWithClaude(apiKey, pageContent) {
-    const prompt = `以下のウェブページの内容から、美術展・展覧会の情報を抽出してください。
+  // Build prompt for extraction
+  function buildPrompt(pageContent) {
+    return `以下のウェブページの内容から、美術展・展覧会の情報を抽出してください。
 
 ページタイトル: ${pageContent.title}
 URL: ${pageContent.url}
@@ -95,19 +140,40 @@ OGP説明: ${pageContent.ogDescription || 'なし'}
 ページ本文:
 ${pageContent.bodyText}
 
-以下の形式でJSONを返してください（他の説明文は不要です）:
+以下の形式でJSONを返してください(他の説明文は不要です):
 {
   "title": "展覧会のタイトル",
   "startDate": "YYYY-MM-DD形式の開始日",
   "endDate": "YYYY-MM-DD形式の終了日",
   "location": "開催場所（美術館名など）",
-  "description": "展覧会の簡潔な説明（100文字程度）"
+  "description": "展覧会の概要(500文字程度、箇条書き)"
 }
 
 注意:
 - 日付が見つからない場合は空文字列にしてください
 - 複数の展覧会がある場合は、メインと思われるものを1つだけ抽出してください
-- JSONのみを返し、マークダウンのコードブロックや説明文は含めないでください`;
+- JSONのみを返し、マークダウンのコードブロックや説明文は含めないでください
+- 開催時刻や休催日がある場合は必ず description に含めてください
+`;
+  }
+
+  // Parse JSON response from AI
+  function parseJsonResponse(content) {
+    try {
+      return JSON.parse(content);
+    } catch (e) {
+      // If JSON not found, extract JSON-like portion
+      const jsonMatch = content.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        return JSON.parse(jsonMatch[0]);
+      }
+      throw new Error(chrome.i18n.getMessage('errorParseFailed'));
+    }
+  }
+
+  // Extract information using Claude API
+  async function extractWithClaude(apiKey, pageContent) {
+    const prompt = buildPrompt(pageContent);
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -137,17 +203,43 @@ ${pageContent.bodyText}
     const data = await response.json();
     const content = data.content[0].text;
 
-    // Parse JSON
-    try {
-      return JSON.parse(content);
-    } catch (e) {
-      // If JSON not found, extract JSON-like portion
-      const jsonMatch = content.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        return JSON.parse(jsonMatch[0]);
-      }
-      throw new Error(chrome.i18n.getMessage('errorParseFailed'));
+    return parseJsonResponse(content);
+  }
+
+  // Extract information using Gemini API
+  async function extractWithGemini(apiKey, pageContent) {
+    const prompt = buildPrompt(pageContent);
+
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        contents: [
+          {
+            parts: [
+              {
+                text: prompt
+              }
+            ]
+          }
+        ],
+        generationConfig: {
+          maxOutputTokens: 1024
+        }
+      })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error?.message || chrome.i18n.getMessage('errorApiFailed'));
     }
+
+    const data = await response.json();
+    const content = data.candidates[0].content.parts[0].text;
+
+    return parseJsonResponse(content);
   }
 
   // Generate Google Calendar URL

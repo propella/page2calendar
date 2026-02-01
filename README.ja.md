@@ -13,36 +13,27 @@
 ## 必要なもの
 
 - Google Chrome ブラウザ
-- Claude API キー（[Anthropic Console](https://console.anthropic.com/)で取得）
+- Gemini または Claude の API Key
+    - Gemini API キー ([API keys | Google AI Studio](https://aistudio.google.com/app/api-keys))
+    - Claude API キー（[Anthropic Console](https://console.anthropic.com/)）
 
 ## インストール方法
 
 1. このフォルダをダウンロードまたはクローン
-
 2. Chromeで `chrome://extensions` を開く
-
 3. 右上の「デベロッパーモード」をONにする
-
 4. 「パッケージ化されていない拡張機能を読み込む」をクリック
-
 5. `page2calendar` フォルダを選択
-
 6. 拡張機能がインストールされ、ツールバーにアイコンが表示される
 
 ## 使い方
 
 1. イベント情報のあるウェブページ（美術展ページなど）を開く
-
 2. ツールバーの拡張機能アイコンをクリック
-
 3. 初回のみ：Claude APIキーを入力して「保存」をクリック
-
 4. 「情報を抽出」ボタンをクリック
-
 5. 抽出された情報を確認・必要に応じて編集
-
 6. 「Googleカレンダーに登録」をクリック
-
 7. Googleカレンダーが開き、イベント作成画面が表示される
 
 ## ファイル構成

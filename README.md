@@ -13,36 +13,27 @@ A Chrome extension that extracts event information from web pages (such as art e
 ## Requirements
 
 - Google Chrome browser
-- Claude API key (get it from [Anthropic Console](https://console.anthropic.com/))
+- Gemini or Claude API Key
+    - Gemini API Key ([API keys | Google AI Studio](https://aistudio.google.com/app/api-keys))
+    - Claude API Key（[Anthropic Console](https://console.anthropic.com/)）
 
 ## Installation
 
 1. Download or clone this folder
-
 2. Open `chrome://extensions` in Chrome
-
 3. Enable "Developer mode" in the top right
-
 4. Click "Load unpacked"
-
 5. Select the `page2calendar` folder
-
 6. The extension will be installed and the icon will appear in the toolbar
 
 ## Usage
 
 1. Open a web page with event information (e.g., art exhibition page)
-
 2. Click the extension icon in the toolbar
-
 3. First time only: Enter your Claude API key and click "Save"
-
 4. Click "Extract Info" button
-
 5. Review and edit the extracted information if needed
-
 6. Click "Add to Google Calendar"
-
 7. Google Calendar opens with the event creation form
 
 ## File Structure
