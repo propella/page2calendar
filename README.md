@@ -69,3 +69,7 @@ page2calendar/
 ## License
 
 MIT License
+
+## Privacy Policy
+
+See [PRIVACY_POLICY.md](PRIVACY_POLICY.md) for details.

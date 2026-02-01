@@ -69,3 +69,35 @@ page2calendar/
 ## ライセンス
 
 MIT License
+
+## プライバシーポリシー
+
+[PRIVACY_POLICY.md](PRIVACY_POLICY.md) を参照してください。
+
+## Chrome Web Store 公開手順
+
+zip 作成:
+
+```bash
+cd page2calendar
+zip -r ../page2calendar.zip \
+  manifest.json \
+  popup.html \
+  popup.js \
+  content.js \
+  styles.css \
+  _locales/ \
+  icons/
+```
+
+* [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole) にアクセス
+* 「新しいアイテム」ボタンをクリック
+* 作成した ZIP ファイルをアップロード
+
+## 更新時の手順
+
+1. `manifest.json` の `version` を更新（例：1.0.0 → 1.0.1）
+2. 新しい ZIP ファイルを作成
+3. Developer Dashboard で該当アイテムを選択
+4. 「パッケージ」タブで新しい ZIP をアップロード
+5. 再度審査に提出
