@@ -1,8 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "美術展カレンダー登録",
+  "name": "__MSG_extName__",
   "version": "1.0.0",
-  "description": "美術展情報をClaude AIで抽出し、Googleカレンダーに登録",
+  "description": "__MSG_extDescription__",
+  "default_locale": "ja",
   "permissions": [
     "activeTab",
     "scripting",

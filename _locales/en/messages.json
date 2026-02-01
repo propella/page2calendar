@@ -1,0 +1,8 @@
+{
+  "extName": {
+    "message": "Page to Calendar"
+  },
+  "extDescription": {
+    "message": "Extract event info from web pages such as art exhibitions with Claude AI and add to Google Calendar"
+  }
+}
