@@ -79,15 +79,8 @@ MIT License
 zip 作成:
 
 ```bash
-cd page2calendar
-zip -r ../page2calendar.zip \
-  manifest.json \
-  popup.html \
-  popup.js \
-  content.js \
-  styles.css \
-  _locales/ \
-  icons/
+./build.sh
+# 出力: ../page2calendar.zip
 ```
 
 * [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole) にアクセス
