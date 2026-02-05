@@ -4,6 +4,8 @@
 
 A Chrome extension that extracts event information from web pages (such as art exhibitions) using Claude AI and adds them to Google Calendar.
 
+![Screenshot](screenshot.png)
+
 ## Features
 
 - Claude AI analyzes page content and extracts event info (title, dates, location, description)
